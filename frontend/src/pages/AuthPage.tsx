@@ -127,7 +127,7 @@ export const AuthPage: React.FC = () => {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="e.g. Dr. Eleanor Vance"
+                  placeholder="Your full name"
                   className="w-full px-3 py-2 text-xs bg-stone-50/50 border border-stone-200 rounded-md text-stone-900 placeholder-stone-400 focus:outline-none focus:ring-1 focus:ring-stone-600 focus:bg-white transition-colors"
                 />
               </div>

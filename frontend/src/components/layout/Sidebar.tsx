@@ -92,10 +92,10 @@ export const Sidebar: React.FC = () => {
             </div>
             <div className="min-w-0 flex-1">
               <div className="text-xs font-semibold text-stone-900 truncate">
-                {user?.name || 'Dr. Eleanor Vance'}
+                {user?.name || 'Researcher'}
               </div>
               <div className="text-[10px] text-stone-500 truncate font-mono">
-                {user?.email || 'researcher@researchdesk.ai'}
+                {user?.email || 'No email'}
               </div>
             </div>
           </div>

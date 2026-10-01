@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { AskQuestionResponse } from '../../types';
 import { SourceCard } from './SourceCard';
 import { ResearchLoadingState } from './ResearchLoadingState';
-import { Copy, Check, Clock, BookOpen, AlertCircle } from 'lucide-react';
+import { Copy, Check, BookOpen, AlertCircle, FileText } from 'lucide-react';
 
 interface Props {
   response: AskQuestionResponse | null;
@@ -32,44 +32,42 @@ export const AnswerPanel: React.FC<Props> = ({
 
   if (error) {
     return (
-      <div className="bg-red-50/70 rounded-lg border border-red-200/80 p-6 text-center space-y-2">
-        <AlertCircle className="w-8 h-8 text-red-500 mx-auto" />
-        <h3 className="text-xs font-semibold text-red-800">Research Query Failed</h3>
-        <p className="text-xs text-red-600 max-w-md mx-auto">{error}</p>
+      <div className="bg-red-50/70 rounded-lg border border-red-200/80 p-5 flex items-start gap-3">
+        <AlertCircle className="w-4 h-4 text-red-500 shrink-0 mt-0.5" />
+        <div className="space-y-1">
+          <h3 className="text-xs font-semibold text-red-800">Query Failed</h3>
+          <p className="text-xs text-red-600 leading-relaxed">{error}</p>
+        </div>
       </div>
     );
   }
 
   if (!response) {
     return (
-      <div className="bg-white rounded-lg border border-stone-200/80 p-12 text-center shadow-2xs">
-        <div className="w-10 h-10 rounded-full bg-stone-100 text-stone-400 mx-auto flex items-center justify-center mb-3">
-          <BookOpen className="w-5 h-5 text-stone-500" />
+      <div className="bg-white rounded-lg border border-stone-200/80 p-10 text-center shadow-2xs">
+        <div className="w-9 h-9 rounded-full bg-stone-100 mx-auto flex items-center justify-center mb-3">
+          <BookOpen className="w-4 h-4 text-stone-400" />
         </div>
         <h3 className="text-xs font-semibold text-stone-800 mb-1">
-          No Query Executed Yet
+          Awaiting Query
         </h3>
-        <p className="text-xs text-stone-500 max-w-sm mx-auto">
-          Select one or more research documents on the left and enter your question above to generate synthesized answers with page citations.
+        <p className="text-xs text-stone-500 max-w-xs mx-auto leading-relaxed">
+          Select one or more documents on the left, then enter a research question to generate a grounded answer with source citations.
         </p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       {/* Answer Box */}
-      <div className="bg-white rounded-lg border border-stone-200/80 p-5 shadow-2xs">
-        <div className="flex items-center justify-between border-b border-stone-100 pb-3 mb-4">
+      <div className="bg-white rounded-lg border border-stone-200/80 shadow-2xs overflow-hidden">
+        {/* Header */}
+        <div className="flex items-center justify-between px-4 py-3 border-b border-stone-100 bg-stone-50/50">
           <div className="flex items-center gap-2">
+            <FileText className="w-3.5 h-3.5 text-stone-500" />
             <span className="text-xs font-semibold text-stone-900">Synthesized Findings</span>
-            <span className="text-stone-300">•</span>
-            <div className="flex items-center gap-1 text-[11px] text-stone-500">
-              <Clock className="w-3 h-3 text-stone-400" />
-              <span>Just now</span>
-            </div>
           </div>
-
           <button
             onClick={handleCopy}
             className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-medium text-stone-600 hover:text-stone-900 hover:bg-stone-100 transition-colors border border-stone-200"
@@ -83,37 +81,39 @@ export const AnswerPanel: React.FC<Props> = ({
             ) : (
               <>
                 <Copy className="w-3 h-3 text-stone-500" />
-                <span className="text-[11px]">Copy markdown</span>
+                <span className="text-[11px]">Copy</span>
               </>
             )}
           </button>
         </div>
 
-        {/* Question Recap */}
-        {question && (
-          <div className="mb-3 p-2.5 bg-stone-50 rounded border border-stone-200/60 text-xs font-medium text-stone-800">
-            <span className="text-stone-400 mr-1.5 font-mono">Q:</span>
-            {question}
-          </div>
-        )}
+        <div className="p-4 space-y-3">
+          {/* Question Recap */}
+          {question && (
+            <div className="p-2.5 bg-stone-50 rounded border border-stone-200/60 text-xs text-stone-700 leading-relaxed">
+              <span className="text-stone-400 font-mono mr-1.5">Q:</span>
+              <span className="font-medium">{question}</span>
+            </div>
+          )}
 
-        {/* Answer Content */}
-        <div className="text-xs text-stone-800 leading-relaxed space-y-2 whitespace-pre-wrap font-sans">
-          {response.answer}
+          {/* Answer Content */}
+          <div className="text-xs text-stone-800 leading-relaxed whitespace-pre-wrap font-sans">
+            {response.answer}
+          </div>
         </div>
       </div>
 
       {/* Sources / Citations Panel */}
       {response.sources && response.sources.length > 0 && (
         <div className="space-y-2">
-          <div className="flex items-center justify-between px-1">
-            <h4 className="text-xs font-semibold text-stone-800 uppercase tracking-wider font-mono">
-              Cited Evidence & Snippets ({response.sources.length})
+          <div className="flex items-center justify-between px-0.5">
+            <h4 className="text-[11px] font-semibold text-stone-700 uppercase tracking-wider font-mono">
+              Source Evidence ({response.sources.length})
             </h4>
-            <span className="text-[11px] text-stone-500">Extracted from research corpus</span>
+            <span className="text-[11px] text-stone-400">page-level citations</span>
           </div>
 
-          <div className="grid grid-cols-1 gap-2">
+          <div className="space-y-2">
             {response.sources.map((source, idx) => (
               <SourceCard key={idx} source={source} index={idx} />
             ))}

@@ -2,6 +2,7 @@
 
 interface ImportMetaEnv {
   readonly VITE_API_BASE_URL: string;
+  readonly VITE_AZURE_CONTAINER_NAME: string;
 }
 
 interface ImportMeta {
