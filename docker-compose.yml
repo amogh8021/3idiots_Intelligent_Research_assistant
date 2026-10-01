@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: researchdesk-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: researchdesk
+      POSTGRES_USER: researchdesk
+      POSTGRES_PASSWORD: researchdesk
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite:latest
+    container_name: researchdesk-azurite
+    restart: unless-stopped
+    command: "azurite-blob --blobHost 0.0.0.0 --blobPort 10000 --skipApiVersionCheck"
+    ports:
+      - "10000:10000"
+    volumes:
+      - azuritedata:/data
+
+volumes:
+  pgdata:
+  azuritedata:

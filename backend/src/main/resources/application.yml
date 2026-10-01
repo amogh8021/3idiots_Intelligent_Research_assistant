@@ -1,0 +1,56 @@
+server:
+  port: ${PORT:8080}
+
+spring:
+  application:
+    name: researchdesk-backend
+
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5433/researchdesk}
+    username: ${DATABASE_USERNAME:researchdesk}
+    password: ${DATABASE_PASSWORD:researchdesk}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: ${MAX_FILE_SIZE:50MB}
+      max-request-size: ${MAX_REQUEST_SIZE:55MB}
+
+# Azure Blob Storage Configuration
+# Set AZURE_STORAGE_CONNECTION_STRING in your environment or .env file (never commit secrets here)
+azure:
+  storage:
+    connection-string: ${AZURE_STORAGE_CONNECTION_STRING}
+    container-name: ${AZURE_STORAGE_CONTAINER_NAME:research-documents}
+
+# External AI / RAG Service
+ai:
+  service:
+    url: ${AI_SERVICE_URL:http://localhost:8000}
+    timeout-seconds: ${AI_SERVICE_TIMEOUT:30}
+    fallback-mock-enabled: ${AI_FALLBACK_MOCK_ENABLED:true}
+
+# Application & Security Settings
+app:
+  document:
+    max-file-size-bytes: 52428800 # 50MB
+  cors:
+    allowed-origins: ${FRONTEND_URL:http://localhost:5173,http://localhost:3000,http://127.0.0.1:5173}
+
+logging:
+  level:
+    com.researchdesk: INFO
+    org.springframework.web: INFO

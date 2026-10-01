@@ -1,0 +1,25 @@
+# Maven & Java
+backend/target/
+*.class
+.idea/
+*.iml
+.vscode/
+
+# Node & Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Python & AI Service
+ai-service/venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+tests_vector_store.json
+
+# Local data & blobs
+data/
+backend/data/
+*.log
+.env
+sample_paper.pdf
